@@ -1,0 +1,89 @@
+.top-buffer { margin-top: 20px; }
+
+/* background styling */
+
+/*
+body {
+	background: url('/static/images/background.jpg');
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover; 
+}
+
+.transbox {
+	background: rgba(255,255,255,0.97);
+	position:absolute;
+	top: 0;
+	bottom 0;
+	left: 0;
+	right: 0;
+}
+
+.content {
+	background: rgba(255,255,255,0.3);
+	padding-bottom: 40px;
+}
+*/
+
+/* browse buttons styling */
+
+.btn-file {
+	position: relative;
+	overflow: hidden;
+}
+
+.btn-file input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	background: white;
+	cursor: inherit;
+	display: block;
+}
+
+/*
+.btn-file input[type=file]:disabled {
+border-radius: 0px;
+box-shadow: none;
+cursor: not-allowed;
+opacity: 0.65;
+pointer-events: none;
+}
+ */
+
+/* no resize for texareas */
+.no-resize {
+	resize: none;
+}
+
+/* explore tab */
+
+input.small-input {
+	max-width: 50px;
+}
+
+/* align tabs to right */
+
+/*
+.right-tabs .nav {
+float: right;
+border-bottom: 0px;
+}
+
+.right-tabs .nav li { float: left }
+
+.right-tabs .tab-content {
+float: left;
+border-top: 1px solid #ddd;
+margin-top: -1px;
+}
+ */
+
