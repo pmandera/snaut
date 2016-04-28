@@ -37,7 +37,17 @@ def app_factory(conf, init_semspace=None):
     """Return the flask app based on the configuration."""
 
     root_prefix = conf.get('server', 'root_prefix')
-    doc_dir = conf.get('server', 'doc_dir')
+    static_url = "%s/static" % root_prefix
+
+    static_dir = os.path.abspath(conf.get('server', 'static_dir'))
+    template_dir = os.path.abspath(conf.get('server', 'template_dir'))
+
+    doc_dir = os.path.abspath(conf.get('server', 'doc_dir'))
+
+    app = Flask(__name__,
+                static_folder=static_dir,
+                template_folder=template_dir,
+                static_url_path=static_url)
 
     semspaces_dir = conf.get('semantic_space', 'semspaces_dir')
     prenormalize = conf.getboolean('semantic_space', 'prenormalize')
@@ -46,9 +56,6 @@ def app_factory(conf, init_semspace=None):
     allow_space_change = conf.getboolean('semantic_space', 'allow_space_change')
 
     preload_space = conf.getboolean('semantic_space', 'preload_space')
-
-    static_url = "%s/static" % root_prefix
-    app = Flask(__name__, static_url_path=static_url)
 
     def load_semspace(semspace_path, semspace_format='semspace'):
         """Load a semantic space based on the path and format."""
