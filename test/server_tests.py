@@ -14,7 +14,7 @@ class SnautTestCase(unittest.TestCase):
 
         conf.add_section('semantic_space')
         conf.set('semantic_space', 'semspaces_dir', './data')
-        conf.set('semantic_space', 'preload_space', 'true')
+        conf.set('semantic_space', 'preload_space', 'no')
         conf.set('semantic_space', 'prenormalize', 'no')
         conf.set('semantic_space', 'numpy_dtype', 'float64')
         conf.set('semantic_space', 'matrix_size_limit', '-1')
@@ -22,6 +22,8 @@ class SnautTestCase(unittest.TestCase):
 
         conf.add_section('server')
         conf.set('server', 'doc_dir', './doc')
+        conf.set('server', 'static_dir', './snaut/templates')
+        conf.set('server', 'template_dir', './snaut/static')
         conf.set('server', 'root_prefix', '')
 
         self.app = snaut.app_factory(conf, example_semspace).test_client()
@@ -130,8 +132,11 @@ class SnautTestCase(unittest.TestCase):
                 assert float(dist) - pair_dist < 10e-10
 
     def test_pairs(self):
-        data = {'wordPairs': [['first', 'second'], ['fifth', 'sixth'],
-                ['twelfth', 'eleventh']], 'metric': 'cosine'}
+        data = {'wordPairs': [
+            [['first'], ['second']],
+            [['fifth'], ['sixth']],
+            [['twelfth'], ['eleventh']]],
+            'metric': 'cosine'}
         data_json = json.dumps(data)
         print data_json
         response = self.app.post('/pairs/', data=dict(data=data_json),
