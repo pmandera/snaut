@@ -24,6 +24,10 @@ class SnautTestCase(unittest.TestCase):
         conf.set('server', 'doc_dir', './doc')
         conf.set('server', 'static_dir', './snaut/templates')
         conf.set('server', 'template_dir', './snaut/static')
+        conf.set('server', 'log_name', 'snaut')
+        conf.set('server', 'log_file', '')
+        conf.set('server', 'log_level', 'critical')
+        conf.set('server', 'template_dir', './snaut/static')
         conf.set('server', 'root_prefix', '')
 
         self.app = snaut.app_factory(conf, example_semspace).test_client()
