@@ -7,6 +7,7 @@ This is the flask server that provides a web interface to the semspaces module.
 
 import os
 import sys
+from functools import wraps
 
 from ConfigParser import SafeConfigParser
 
@@ -18,7 +19,7 @@ import cStringIO as StringIO
 from flask import Flask, jsonify, request, make_response
 from flask import Markup, render_template
 
-from utils.utils import df_to_csv_string
+from utils.utils import df_to_csv_string, get_logger
 from semspaces.space import SemanticSpace
 
 
@@ -49,6 +50,12 @@ def app_factory(conf, init_semspace=None):
                 template_folder=template_dir,
                 static_url_path=static_url)
 
+    log_name = conf.get('server', 'log_name')
+    log_file = conf.get('server', 'log_file')
+    log_level = conf.get('server', 'log_level')
+
+    logger = get_logger(log_name, log_file, log_level)
+
     semspaces_dir = conf.get('semantic_space', 'semspaces_dir')
     prenormalize = conf.getboolean('semantic_space', 'prenormalize')
     matrix_size_limit = conf.getint('semantic_space', 'matrix_size_limit')
@@ -56,6 +63,35 @@ def app_factory(conf, init_semspace=None):
     allow_space_change = conf.getboolean('semantic_space', 'allow_space_change')
 
     preload_space = conf.getboolean('semantic_space', 'preload_space')
+
+    def log_data(f):
+        """Decorator that logs request data."""
+        @wraps(f)
+        def decorated_log_data(*args, **kwargs):
+
+            if not request.headers.getlist("X-Forwarded-For"):
+                ip = request.remote_addr
+            else:
+                ip = request.headers.getlist("X-Forwarded-For")[0]
+
+            url_path = request.path
+
+            data = request.get_json()
+            form = request.form.to_dict()
+
+            if not data:
+                data = '-'
+
+            if not form:
+                form = '-'
+
+            logger.info('%s %s %s %s',
+                        ip, url_path, json.dumps(data),
+                        json.dumps(form))
+
+            return f(*args, **kwargs)
+
+        return decorated_log_data
 
     def load_semspace(semspace_path, semspace_format='semspace'):
         """Load a semantic space based on the path and format."""
@@ -221,6 +257,7 @@ def app_factory(conf, init_semspace=None):
         return jsonify(status_dict)
 
     @app.route('%s/similar/' % root_prefix, methods=['POST'])
+    @log_data
     def similar():
         """Return most similar words.
 
@@ -267,6 +304,7 @@ def app_factory(conf, init_semspace=None):
         return jsonify(result)
 
     @app.route('%s/similarity-matrix/' % root_prefix, methods=['POST'])
+    @log_data
     def similarity_matrix():
         """Return similarity matrix (in csv).
 
@@ -307,6 +345,7 @@ def app_factory(conf, init_semspace=None):
         return response
 
     @app.route('%s/offset/' % root_prefix, methods=['POST'])
+    @log_data
     def offset():
         """
         Return n words colsest to a calculated vector.
@@ -336,6 +375,7 @@ def app_factory(conf, init_semspace=None):
         return jsonify(result)
 
     @app.route('%s/pairs/' % root_prefix, methods=['POST'])
+    @log_data
     def pairs():
         """Return similarity matrix (in csv).
 
@@ -375,6 +415,7 @@ def app_factory(conf, init_semspace=None):
         return response
 
     @app.route('%s/defined-at/' % root_prefix, methods=['POST'])
+    @log_data
     def defined_at():
         """Return information about which of the listed words
         are defined in a semantic space.

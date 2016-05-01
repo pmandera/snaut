@@ -14,5 +14,6 @@ snaut/semspaces
 snaut/static/js/snaut/*
 configs/
 config.ini.dev
+*.log
 
 .venv
