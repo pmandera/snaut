@@ -9,11 +9,12 @@ dist/
 windows_installer/
 dist-linux/
 
-data/*
 snaut/semspaces
 snaut/static/js/snaut/*
 configs/
 config.ini.dev
+
+data/*
 *.log
 
 .venv
