@@ -321,9 +321,15 @@ def app_factory(conf, init_semspace=None):
         data = json.loads(request.form['data'])
         metric = data['metric']
         words_1 = data['words1']
+
         if 'words2' not in data:
             if check_matrix_size(semspace, words_1):
                 (words_1_ok, words_1_nd) = split_by_defined(words_1)
+
+                if not words_1_ok:
+                    return make_response(
+                        "No valid elements in the list!")
+
                 most_similar = semspace.all_distances(words_1_ok, metric=metric)
             else:
                 return make_response("Matrix size error!")
@@ -332,6 +338,11 @@ def app_factory(conf, init_semspace=None):
             if check_matrix_size(semspace, words_1, words_2):
                 (words_1_ok, words_1_nd) = split_by_defined(words_1)
                 (words_2_ok, words_2_nd) = split_by_defined(words_2)
+
+                if not words_1_ok or not words_2_ok:
+                    return make_response(
+                        "No valid elements in one of the lists!")
+
                 most_similar = semspace.matrix_distances(words_1_ok, words_2_ok,
                                                          metric=metric)
             else:
