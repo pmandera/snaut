@@ -9,17 +9,17 @@ import os
 import sys
 from functools import wraps
 
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 import markdown
 import json
 import unicodecsv as csv
-import cStringIO as StringIO
+import io as StringIO
 
 from flask import Flask, jsonify, request, make_response
 from flask import Markup, render_template
 
-from utils.utils import df_to_csv_string, get_logger
+from .utils.utils import df_to_csv_string, get_logger
 from semspaces.space import SemanticSpace
 
 
@@ -117,9 +117,9 @@ def app_factory(conf, init_semspace=None):
             semspace_path = conf.get('semantic_space', 'preload_space_file')
             semspace_format = conf.get('semantic_space', 'preload_space_format')
 
-            print 'Pre-loading semantic space: %s' % semspace_path
+            print(('Pre-loading semantic space: %s' % semspace_path))
             load_semspace(semspace_path, semspace_format)
-            print 'Semantic space loaded.'
+            print('Semantic space loaded.')
 
             return True
         else:
@@ -495,9 +495,9 @@ if __name__ == '__main__':
     else:
         welcome_msg = 'Open your browser and go to'
 
-    print '%s %s' % (welcome_msg, url)
-    print 'Keep this window open.'
-    print
+    print(('%s %s' % (welcome_msg, url)))
+    print('Keep this window open.')
+    print()
 
     app = app_factory(conf)
 

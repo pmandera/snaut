@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
-from snaut import app_factory
+from .snaut import app_factory
 
 conf = SafeConfigParser()
 

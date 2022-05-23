@@ -1,9 +1,9 @@
-from ConfigParser import RawConfigParser
+from configparser import RawConfigParser
 import snaut.snaut as snaut
 import unittest
 import json
 import csv
-import StringIO
+import io
 
 from example_space import example_semspace
 
@@ -47,16 +47,16 @@ class SnautTestCase(unittest.TestCase):
         response = self.app.post('/similar/', data=data_json,
                                  follow_redirects=True,
                                  content_type='application/json')
-        print response
+        print(response)
 
         result = json.loads(response.data)
-        print result
+        print(result)
 
         assert result['notDefined']['words1'] == ['twelfth']
         assert result['notDefined']['words2'] is None
 
         sims = result['similarities']
-        for w, nns in sims.iteritems():
+        for w, nns in list(sims.items()):
             assert nns[0][0] == w
             assert len(nns) == 10
 
@@ -68,15 +68,15 @@ class SnautTestCase(unittest.TestCase):
                                  follow_redirects=True,
                                  content_type='application/json')
 
-        print response
+        print(response)
         result = json.loads(response.data)
 
-        print result
+        print(result)
         assert result['notDefined']['words1'] == ['twelfth']
         assert result['notDefined']['words2'] == ['thirteenth']
 
         sims = result['similarities']
-        for w, nns in sims.iteritems():
+        for w, nns in list(sims.items()):
             assert len(nns) == 3
 
     def test_similarity_matrix_words1(self):
@@ -89,7 +89,7 @@ class SnautTestCase(unittest.TestCase):
         content_disposition = response.headers["Content-Disposition"]
         assert content_disposition == "attachment; filename=similarities.csv"
 
-        f = StringIO.StringIO(response.data)
+        f = io.StringIO(response.data)
         reader = list(csv.reader(f, delimiter=','))
 
         cols = reader[0][1:]
@@ -100,10 +100,10 @@ class SnautTestCase(unittest.TestCase):
 
         for row in reader[1:]:
             row_word = row[0]
-            row_distances = zip(cols, row[1:])
+            row_distances = list(zip(cols, row[1:]))
             for col_word, dist in row_distances:
                 pair_dist = example_semspace.pair_distance(row_word, col_word)
-                print col_word, row_word, float(dist), pair_dist
+                print((col_word, row_word, float(dist), pair_dist))
                 assert float(dist) - pair_dist < 10e-10
 
     def test_similarity_matrix_words1_words2(self):
@@ -117,7 +117,7 @@ class SnautTestCase(unittest.TestCase):
         content_disposition = response.headers["Content-Disposition"]
         assert content_disposition == "attachment; filename=similarities.csv"
 
-        f = StringIO.StringIO(response.data)
+        f = io.StringIO(response.data)
         reader = list(csv.reader(f, delimiter=','))
 
         cols = reader[0][1:]
@@ -128,10 +128,10 @@ class SnautTestCase(unittest.TestCase):
 
         for row in reader[1:]:
             row_word = row[0]
-            row_distances = zip(cols, row[1:])
+            row_distances = list(zip(cols, row[1:]))
             for col_word, dist in row_distances:
                 pair_dist = example_semspace.pair_distance(row_word, col_word)
-                print col_word, row_word, float(dist), pair_dist
+                print((col_word, row_word, float(dist), pair_dist))
                 assert float(dist) - pair_dist < 10e-10
 
     def test_pairs(self):
@@ -141,23 +141,23 @@ class SnautTestCase(unittest.TestCase):
             [['twelfth'], ['eleventh']]],
             'metric': 'cosine'}
         data_json = json.dumps(data)
-        print data_json
+        print(data_json)
         response = self.app.post('/pairs/', data=dict(data=data_json),
                                  follow_redirects=True)
 
         content_disposition = response.headers["Content-Disposition"]
         assert content_disposition == "attachment; filename=word-pairs.csv"
 
-        f = StringIO.StringIO(response.data)
+        f = io.StringIO(response.data)
         reader = list(csv.reader(f, delimiter=','))
 
         cols = reader[0]
-        print reader
+        print(reader)
         assert cols == ['word_1', 'word_2', 'distance']
 
         for w1, w2, dist in reader[1:]:
             pair_dist = example_semspace.pair_distance(w1, w2)
-            print w1, w2, float(dist), pair_dist
+            print((w1, w2, float(dist), pair_dist))
             assert float(dist) - pair_dist < 10e-10
 
 

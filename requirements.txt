@@ -1,6 +1,7 @@
 unicodecsv
 markdown
 flask
--e git+https://github.com/pmandera/semspaces.git@71b4d017a7227a3aced50a6d4b6787d64c637287#egg=semspaces
+# -e git+https://github.com/pmandera/semspaces.git@71b4d017a7227a3aced50a6d4b6787d64c637287#egg=semspaces
+semspaces==0.1.5
 fs
 pyinstaller

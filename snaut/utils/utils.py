@@ -4,7 +4,7 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-import cStringIO as StringIO
+import io as StringIO
 
 
 def df_to_csv_string(df):
