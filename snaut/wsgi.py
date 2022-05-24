@@ -7,6 +7,6 @@ from .snaut import app_factory
 
 conf = SafeConfigParser()
 
-conf.read(['config.ini', 'config_local.ini'])
+conf.read(['config.ini', 'data/config.ini', 'config_local.ini'])
 
 app = app_factory(conf)
