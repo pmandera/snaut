@@ -2,6 +2,5 @@ unicodecsv==0.14.1
 markdown==3.5.1
 flask==3.0.0
 git+https://github.com/pmandera/semspaces.git@278bfb0cabce2190c500b4390b9c83c8c659dc10#egg=semspaces
-semspaces==0.1.5
 fs==2.4.11
 # pyinstaller
