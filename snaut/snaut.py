@@ -17,7 +17,8 @@ import unicodecsv as csv
 import io as StringIO
 
 from flask import Flask, jsonify, request, make_response
-from flask import Markup, render_template
+from flask import render_template
+from markupsafe import Markup
 
 from .utils.utils import df_to_csv_string, get_logger
 from semspaces.space import SemanticSpace
