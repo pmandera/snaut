@@ -4,7 +4,7 @@ Snaut
 Interface for exploring semantic spaces.  The interface can be run either
 locally or as a web server.
 
-For more information see [website](http://crr.ugent.be/snaut/).
+For more information see [website](https://www.pawelmandera.com/2023/12/18/snaut-move/).
 
 Snaut uses the `semspaces` module. See
 [here](http://github.com/pmandera/semspaces/) for more information.
@@ -23,7 +23,7 @@ in press).
 # Authors
 
 The tool was developed at Center for Reading Research, Ghent University by
-[Paweł Mandera](http://crr.ugent.be/pawel-mandera).
+[Paweł Mandera](http://www.pawelmandera.com/).
 
 # License
 
