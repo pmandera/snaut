@@ -12,7 +12,7 @@ Snaut uses the `semspaces` module. See
 # Semantic spaces
 
 You can download a set of validated semantic spaces for English and Dutch
-[here](http://zipf.ugent.be/snaut/spaces/) (see Mandera, Keuleers, & Brysbaert,
+[here](https://www.pawelmandera.com/2023/12/18/snaut-move/) (see Mandera, Keuleers, & Brysbaert,
 in press). 
 
 # Contribute 
